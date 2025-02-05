@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Productos</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+    <!-- Header -->
+    <header class="bg-light py-3 mb-4">
+        <div class="container d-flex justify-content-between align-items-center">
+            <!-- Logo -->
+            <div>
+                {% load static %}
+                <img src="{% static 'images/logotipo.webp' %}" alt="Logo" class="img-fluid" style="max-width: 150px;">
+            </div>
+            <!-- Buscador -->
+            <form class="d-flex" method="get" action="{% url 'productos_lista' %}">
+                <input class="form-control me-2" type="search" name="q" placeholder="Buscar productos" aria-label="Buscar">
+                <button class="btn btn-outline-success" type="submit">Buscar</button>
+            </form>
+        </div>
+    </header>
+
+    <!-- Filtros -->
+    <div class="container mb-4">
+        <form method="get" class="d-flex align-items-center flex-wrap">
+            <!-- Filtro de precio mínimo -->
+            <div class="me-3">
+                <label for="id_precio__gte" class="form-label">Precio mínimo</label>
+                <input type="number" id="id_precio__gte" name="precio__gte" class="form-control" placeholder="Mínimo">
+            </div>
+
+            <!-- Filtro de precio máximo -->
+            <div class="me-3">
+                <label for="id_precio__lte" class="form-label">Precio máximo</label>
+                <input type="number" id="id_precio__lte" name="precio__lte" class="form-control" placeholder="Máximo">
+            </div>
+
+            <!-- Filtro de categoría -->
+            <div class="me-3">
+                <label for="id_categoria" class="form-label">Categoría</label>
+                <input type="text" id="id_categoria" name="categoria" class="form-control" placeholder="Categoría">
+            </div>
+
+            <!-- Filtro de stock mínimo -->
+            <div class="me-3">
+                <label for="id_stock__gte" class="form-label">Stock mínimo</label>
+                <input type="number" id="id_stock__gte" name="stock__gte" class="form-control" placeholder="Stock mínimo">
+            </div>
+
+            <!-- Botón de filtro -->
+            <button type="submit" class="btn btn-primary">Filtrar</button>
+        </form>
+        
+        <!-- Lista de Productos -->
+        <div class="row mt-4">
+            {% for producto in productos %}
+            <div class="col-md-3 mb-4">
+                <div class="card h-100">
+                    <a href="{% url 'producto_gestion' producto.id %}">
+                        {% if producto.imagen %}
+                        <img src="{{ producto.imagen.url }}" class="card-img-top img-fluid fixed-size" alt="{{ producto.nombre }}">
+                        {% else %}
+                        <img src="https://via.placeholder.com/300x200" class="card-img-top img-fluid fixed-size" alt="Imagen no disponible">
+                        {% endif %}
+                    </a>
+                    <div class="card-body">
+                        <h5 class="card-title">{{ producto.nombre }}</h5>
+                        <p class="card-text">${{ producto.precio }}</p>
+                        <a href="{% url 'producto_detalle' producto.id %}" class="btn btn-primary">Ver detalles</a>
+                    </div>
+                </div>
+            </div>
+            {% empty %}
+            <p class="text-center">No hay productos disponibles.</p>
+            {% endfor %}
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-dark text-white py-4 mt-5">
+        <div class="container">
+            <div class="row text-center text-md-start">
+                <div class="col-md-4">
+                    <h5>Columna 1</h5>
+                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+                </div>
+                <div class="col-md-4">
+                    <h5>Columna 2</h5>
+                    <p>Nullam eget felis eget nunc lobortis mattis.</p>
+                </div>
+                <div class="col-md-4">
+                    <h5>Columna 3</h5>
+                    <p>Vivamus suscipit tortor eget felis porttitor volutpat.</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

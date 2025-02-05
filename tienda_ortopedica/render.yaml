@@ -1,0 +1,9 @@
+services:
+  - type: web
+    name: tienda-ortopedica
+    env: python
+    buildCommand: "pip install -r requirements.txt && python manage.py collectstatic --noinput"
+    startCommand: "gunicorn tienda_ortopedica.wsgi:application"
+    envVars:
+      - key: DJANGO_SETTINGS_MODULE
+        value: "tienda_ortopedica.settings.production"

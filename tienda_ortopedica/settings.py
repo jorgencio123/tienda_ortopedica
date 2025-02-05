@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-0af5*ovv_&@ouhqq9)1zis$r8f)@s#np6_s0zim&$od)1h0j36
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS =['tienda-ortopedica.onrender.com', 'localhost', '127.0.0.1']
 
 
 

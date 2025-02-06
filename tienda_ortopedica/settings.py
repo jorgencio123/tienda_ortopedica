@@ -34,7 +34,7 @@ CSRF_TRUSTED_ORIGINS = [
     'https://tudominio.render.com',
     'http://localhost:8000',  # Si trabajas con localhost
     'https://www.youtube.com',  # Si es necesario incluir youtube también
-    'https://tienda-ortopedica.onrender.com/',
+    'https://tienda-ortopedica.onrender.com',
 ]
 
 CORS_ALLOWED_ORIGINS = [

@@ -106,8 +106,8 @@ def procesar_compra(request):
         "amount": total,  # Monto total de la compra
         "email": "jorgencio97@gmail.com",                   # Email del cliente
         "paymentMethod": 9,  # Medios de pago (9 = Todos)
-        "urlConfirmation": "https://tienda-ortopedica.onrender.com/carrito/confirmacion/"
-        "urlReturn": "https://tienda-ortopedica.onrender.com/"  # URL de retorno
+        "urlConfirmation": "https://tienda-ortopedica.onrender.com/carrito/confirmacion/",
+        "urlReturn": "https://tienda-ortopedica.onrender.com/" 
     }
 
     # SecretKey proporcionado (debes reemplazarlo con el real)

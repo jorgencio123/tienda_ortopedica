@@ -35,6 +35,8 @@ CSRF_TRUSTED_ORIGINS = [
     'http://localhost:8000',  # Si trabajas con localhost
     'https://www.youtube.com',  # Si es necesario incluir youtube también
     'https://tienda-ortopedica.onrender.com',
+    "https://flow.cl",
+
 ]
 
 CORS_ALLOWED_ORIGINS = [
@@ -75,6 +77,7 @@ CORS_ALLOWED_ORIGIN_REGEXES = [
 r"^https://\w+\.domain\.com$",
 ]
 
+CSRF_REFERER_POLICY = "no-referrer-when-downgrade"
 
 
 INSTALLED_APPS = [

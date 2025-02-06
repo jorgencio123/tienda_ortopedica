@@ -41,7 +41,7 @@ CORS_ALLOWED_ORIGINS = [
     'https://sandbox.flow.cl',
     'http://127.0.0.1:8000',
     'https://tudominio.render.com',
-    'https://tienda-ortopedica.onrender.com/',
+    'https://tienda-ortopedica.onrender.com',
 ]
 # Application definition
 # Redirigir después de iniciar sesión

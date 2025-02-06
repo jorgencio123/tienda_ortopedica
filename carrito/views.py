@@ -12,6 +12,8 @@ from django.db import IntegrityError
 from transacciones.models import Transaccion
 from django.views.decorators.csrf import csrf_exempt
 
+
+@csrf_exempt
 def obtener_o_crear_carrito(request):
     """Obtiene el carrito del usuario o crea uno nuevo basado en la sesión si es un invitado."""
     if request.user.is_authenticated:
@@ -26,12 +28,16 @@ def obtener_o_crear_carrito(request):
 
     return carrito
 
+
+@csrf_exempt
 def ver_carrito(request):
     """Muestra el carrito, ya sea de un usuario autenticado o un invitado."""
     carrito = obtener_o_crear_carrito(request)
     total = sum(item.subtotal() for item in carrito.items.all())
     return render(request, 'carrito/ver_carrito.html', {'carrito': carrito, 'total': total})
 
+
+@csrf_exempt
 def agregar_al_carrito(request, producto_id):
     """Agrega un producto al carrito, asegurando que no se duplique en la primera adición."""
     carrito = obtener_o_crear_carrito(request)
@@ -45,6 +51,8 @@ def agregar_al_carrito(request, producto_id):
     item.save()
     return redirect('ver_carrito')
 
+
+@csrf_exempt
 def eliminar_del_carrito(request, item_id):
     """Elimina un item del carrito."""
     carrito = obtener_o_crear_carrito(request)

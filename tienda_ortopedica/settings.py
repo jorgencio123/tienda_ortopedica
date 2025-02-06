@@ -28,12 +28,49 @@ DEBUG = True
 ALLOWED_HOSTS =['tienda-ortopedica.onrender.com', 'localhost', '127.0.0.1']
 
 
+CSRF_TRUSTED_ORIGINS = [
+    'http://127.0.0.1:8000',
+    'https://tudominio.render.com',
+    'http://localhost:8000',  # Si trabajas con localhost
+    'https://www.youtube.com',  # Si es necesario incluir youtube también
+]
 
+CORS_ALLOWED_ORIGINS = [
+    'http://127.0.0.1:8000',
+    'https://tudominio.render.com',
+]
 # Application definition
-
 # Redirigir después de iniciar sesión
 LOGIN_REDIRECT_URL = '/productos/'
 LOGOUT_REDIRECT_URL = '/clientes/login/'
+
+CORS_ALLOW_METHODS = [
+'DELETE',
+'GET',
+'OPTIONS',
+'PATCH',
+'POST',
+'PUT',
+]
+
+CORS_ALLOW_HEADERS = [
+'accept',
+'accept-encoding',
+'authorization',
+'content-type',
+'dnt',
+'origin',
+'user-agent',
+'x-csrftoken',
+'x-requested-with',
+]
+
+CORS_URLS_REGEX = r'^/api/.*$'
+
+CORS_ALLOWED_ORIGIN_REGEXES = [
+r"^https://\w+\.domain\.com$",
+]
+
 
 
 INSTALLED_APPS = [
@@ -47,6 +84,9 @@ INSTALLED_APPS = [
     'clientes',
     'productos',
     'carrito',
+    'transacciones',
+    'corsheaders',
+
 
 ]
 
@@ -59,6 +99,9 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
+    'django.middleware.common.CommonMiddleware',
+
 ]
 
 ROOT_URLCONF = 'tienda_ortopedica.urls'

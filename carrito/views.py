@@ -5,8 +5,12 @@ import hmac
 import hashlib
 import requests
 from django.conf import settings
-
-
+import uuid
+import random
+import string
+from django.db import IntegrityError
+from transacciones.models import Transaccion
+from django.views.decorators.csrf import csrf_exempt
 
 def obtener_o_crear_carrito(request):
     """Obtiene el carrito del usuario o crea uno nuevo basado en la sesión si es un invitado."""
@@ -50,6 +54,9 @@ def eliminar_del_carrito(request, item_id):
 
 
 
+
+
+@csrf_exempt
 def procesar_compra(request):
     # Obtener el carrito del usuario
     carrito = Carrito.objects.filter(usuario=request.user).first()
@@ -59,18 +66,30 @@ def procesar_compra(request):
 
     # Calcular el total
     total = sum(item.subtotal() for item in carrito.items.all())
-    
+
+    # Generar un ID aleatorio único
+    orden_id = str(uuid.uuid4())  # Generamos un ID único con UUID
+
+    # Verificar si el ID ya existe en Transaccion
+    if Transaccion.objects.filter(nombre=orden_id).exists():
+        # Si el ID ya existe, generamos uno nuevo
+        orden_id = str(uuid.uuid4())
+
+    # Guardar el ID de la transacción en el modelo Transaccion
+    transaccion = Transaccion(nombre=orden_id)
+    transaccion.save()
+
     # Parámetros requeridos para la solicitud a Flow
     params = {
         "apiKey": "6CF5B5F9-38A4-4A8C-AA2A-354L8197C8E9",  # Cambiar por tu apiKey
-        "commerceOrder": f"ORDENnumerorandom1",  # Usamos el ID del carrito para la orden
+        "commerceOrder": f"ORDEN{orden_id}",  # Usamos el ID aleatorio generado para la orden
         "subject": f"Compra en el carrito de {request.user.username}",
         "currency": "CLP",
         "amount": total,  # Monto total de la compra
         "email": "jorgencio97@gmail.com",                   # Email del cliente
         "paymentMethod": 9,  # Medios de pago (9 = Todos)
-        "urlConfirmation": "https://www.youtube.com/watch?v=-nvtT2h50sw&ab_channel=Weasperoconm%C3%BAsica-Topic",  # URL de confirmación
-        "urlReturn": "https://www.youtube.com/watch?v=e2tyZw-07EM&ab_channel=Weasperoconm%C3%BAsica-Topic"  # URL de retorno
+        "urlConfirmation": "https://tienda-ortopedica.onrender.com/",  # URL de confirmación
+        "urlReturn": "https://tienda-ortopedica.onrender.com/"  # URL de retorno
     }
 
     # SecretKey proporcionado (debes reemplazarlo con el real)

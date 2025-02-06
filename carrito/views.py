@@ -28,6 +28,16 @@ def obtener_o_crear_carrito(request):
 
     return carrito
 
+from django.http import JsonResponse
+from django.views.decorators.csrf import csrf_exempt
+
+@csrf_exempt
+def confirmacion_pago(request):
+    if request.method == "POST":
+        # Aquí procesas la respuesta de Flow
+        return JsonResponse({"status": "ok"})
+    return JsonResponse({"error": "Método no permitido"}, status=405)
+
 
 @csrf_exempt
 def ver_carrito(request):

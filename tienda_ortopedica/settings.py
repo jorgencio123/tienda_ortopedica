@@ -34,12 +34,14 @@ CSRF_TRUSTED_ORIGINS = [
     'http://localhost:8000',  # Si trabajas con localhost
     'https://www.youtube.com',  # Si es necesario incluir youtube también
     'https://sandbox.flow.cl',
+    'https://tienda-ortopedica.onrender.com/',
 ]
 
 CORS_ALLOWED_ORIGINS = [
     'http://127.0.0.1:8000',
     'https://tudominio.render.com',
     'https://sandbox.flow.cl',
+    'https://tienda-ortopedica.onrender.com/',
 ]
 # Application definition
 # Redirigir después de iniciar sesión

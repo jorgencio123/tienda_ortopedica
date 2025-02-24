@@ -43,7 +43,7 @@ def confirmacion_pago(request):
 def ver_carrito(request):
     """Muestra el carrito, ya sea de un usuario autenticado o un invitado."""
     carrito = obtener_o_crear_carrito(request)
-    total = sum(item.subtotal() for item in carrito.items.all())
+    total = carrito.total()  # Llamar al método total() del modelo
     return render(request, 'carrito/ver_carrito.html', {'carrito': carrito, 'total': total})
 
 
@@ -147,3 +147,13 @@ def procesar_compra(request):
         print("Error al crear la orden. Código:", response.status_code)
         print("Detalle:", response.text)
         return render(request, 'carrito/error_pago.html', {'error': "Hubo un problema al procesar la compra. Intenta nuevamente."})
+
+
+def ver_productos(request):
+    """Muestra la lista de productos junto con la cantidad total del carrito."""
+    productos = Producto.objects.all()
+    carrito = obtener_o_crear_carrito(request)
+    return render(request, 'productos.html', {
+        'productos': productos,
+        'carrito': carrito,
+    })

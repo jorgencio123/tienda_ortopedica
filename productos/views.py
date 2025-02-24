@@ -3,6 +3,8 @@ from django.views.generic import ListView, DetailView, CreateView, UpdateView, D
 from .models import Producto
 from .filters import ProductoFilter
 from django_filters.views import FilterView
+from django.core.paginator import Paginator
+from django.shortcuts import get_object_or_404, redirect, render
 
 
 
@@ -19,17 +21,41 @@ class ProductoGestionView(DetailView):
     context_object_name = 'producto'
 
 
-class ProductoListViewJefe(FilterView):
-    model = Producto
-    template_name = 'productos/producto_lista_jefe.html'  # Nuevo nombre de plantilla
-    context_object_name = 'productos'
-    filterset_class = ProductoFilter
+
+
+from django_filters.views import FilterView
+from .models import Producto
+from .filters import ProductoFilter
 
 class ProductoListView(FilterView):
     model = Producto
     template_name = 'productos/producto_lista.html'
     context_object_name = 'productos'
     filterset_class = ProductoFilter
+    paginate_by = 16  # Número de productos por página
+
+    # Sobrescribimos el método get_queryset para aplicar filtros y orden explícito
+    def get_queryset(self):
+        # Obtenemos el queryset con los filtros aplicados
+        queryset = Producto.objects.all()
+
+        # Aplicamos el filtro de acuerdo a la solicitud GET
+        filtro = ProductoFilter(self.request.GET, queryset=queryset)
+
+        # Si hay filtros, devolvemos el queryset filtrado
+        return filtro.qs.order_by('nombre')  # Ordenamos por 'nombre'
+
+class ProductoListViewJefe(FilterView):
+    model = Producto
+    template_name = 'productos/producto_lista_jefe.html'
+    context_object_name = 'productos'
+    filterset_class = ProductoFilter
+    paginate_by = 16  # Ya está configurado para mostrar 16 elementos por página
+
+    def get_queryset(self):
+        return Producto.objects.all().order_by('nombre')  # Orden explícito
+
+
 
 class ProductoCreateView(CreateView):
     model = Producto

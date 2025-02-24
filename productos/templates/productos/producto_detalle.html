@@ -1,6 +1,14 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    {% load static %}
+    <style>
+        .custom-header {
+    background: url('images/fondosuperir.webp') no-repeat center center;
+    background-size: cover;
+}
+    </style>
+
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Productos</title>
@@ -11,20 +19,32 @@
 </head>
 <body>
     <!-- Header -->
-    <header class="bg-light py-3 mb-4">
+    {% load static %}
+    <header class="bg-light py-3 mb-4" style="background: url('{% static 'images/fondosuperir.webp' %}') no-repeat center center; background-size: cover;">
         <div class="container d-flex justify-content-between align-items-center">
             <!-- Logo -->
             <div>
-                {% load static %}
-                <img src="{% static 'images/logotipo.webp' %}" alt="Logo" class="img-fluid" style="max-width: 150px;">
+                <img src="{% static 'images/logotipo.webp' %}" alt="Logo" class="img-fluid" 
+                     style="max-width: 150px; border-radius: 50%;">
             </div>
-            <!-- Buscador -->
-            <form class="d-flex" method="get" action="{% url 'productos_lista' %}">
-                <input class="form-control me-2" type="search" name="q" placeholder="Buscar productos" aria-label="Buscar">
-                <button class="btn btn-outline-success" type="submit">Buscar</button>
-            </form>
+    
+            <!-- Buscador y Carrito alineados a la derecha -->
+            <div class="d-flex ms-auto align-items-center">
+                <!-- Formulario de búsqueda -->
+                <form class="d-flex me-3" method="get" action="{% url 'productos_lista' %}">
+                    <input class="form-control me-2" type="search" name="q" placeholder="Buscar productos" aria-label="Buscar">
+                    <button class="btn btn-outline-success" type="submit">Buscar</button>
+                </form>
+    
+                <!-- Icono de Carrito -->
+                <a href="{% url 'ver_carrito' %}" class="btn btn-outline-primary position-relative">
+                    <img src="{% static 'images/shopincart.webp' %}" alt="Carrito de compras" 
+                         style="width: 50px; height: auto;">
+                </a>
+            </div>
         </div>
     </header>
+    
 
     <div class="container my-5">
         <div class="row">

@@ -7,7 +7,6 @@ from django.core.paginator import Paginator
 from django.shortcuts import get_object_or_404, redirect, render
 
 
-
 class ProductoDetailView(DetailView):
     model = Producto
     template_name = 'productos/producto_detalle.html'
@@ -23,9 +22,6 @@ class ProductoGestionView(DetailView):
 
 
 
-from django_filters.views import FilterView
-from .models import Producto
-from .filters import ProductoFilter
 
 class ProductoListView(FilterView):
     model = Producto
@@ -34,16 +30,9 @@ class ProductoListView(FilterView):
     filterset_class = ProductoFilter
     paginate_by = 16  # Número de productos por página
 
-    # Sobrescribimos el método get_queryset para aplicar filtros y orden explícito
     def get_queryset(self):
-        # Obtenemos el queryset con los filtros aplicados
-        queryset = Producto.objects.all()
-
-        # Aplicamos el filtro de acuerdo a la solicitud GET
-        filtro = ProductoFilter(self.request.GET, queryset=queryset)
-
-        # Si hay filtros, devolvemos el queryset filtrado
-        return filtro.qs.order_by('nombre')  # Ordenamos por 'nombre'
+        qs = super().get_queryset().order_by('nombre')
+        return qs
 
 class ProductoListViewJefe(FilterView):
     model = Producto

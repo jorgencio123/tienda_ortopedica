@@ -35,12 +35,12 @@
             background: linear-gradient(90deg, #0099ff 0%, #007bff 100%);
             border: none;
         }
+        .btn-secondary {
+            background: linear-gradient(90deg, #00cc66 0%, #008844 100%);
+            border: none;
+        }
         .text-light a {
             color: rgba(255, 255, 255, 0.9);
-        }
-        .profile-icon {
-            font-size: 50px;
-            color: white;
         }
     </style>
 </head>
@@ -67,6 +67,7 @@
         <div class="text-light mt-3">
             <a href="#">¿Olvidaste tu contraseña?</a>
         </div>
+        <a href="{% url 'registrar' %}" class="btn btn-secondary w-100 mt-3">Crea tu cuenta</a>
     </div>
 </body>
 </html>

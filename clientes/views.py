@@ -5,6 +5,8 @@ from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
 from django.contrib.auth.mixins import LoginRequiredMixin
 from .models import Cliente
+from .forms import RegistroForm
+
 
 class ClienteListView(LoginRequiredMixin, ListView):
     model = Cliente
@@ -24,10 +26,12 @@ class ClienteUpdateView(LoginRequiredMixin, UpdateView):
 
 class RegistrarView(CreateView):
     model = User
-    form_class = UserCreationForm
+    form_class = RegistroForm  # Usamos el nuevo formulario
     template_name = 'clientes/registrar.html'
 
     def form_valid(self, form):
         user = form.save()
-        Cliente.objects.create(usuario=user, direccion='', telefono='')
+        direccion = form.cleaned_data.get('direccion')
+        telefono = form.cleaned_data.get('telefono')
+        Cliente.objects.create(usuario=user, direccion=direccion, telefono=telefono)
         return redirect('login')

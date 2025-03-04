@@ -104,12 +104,26 @@ def agregar_al_carrito(request, producto_id):
     carrito = obtener_o_crear_carrito(request)
     producto = get_object_or_404(Producto, id=producto_id)
     
+    # Verificar si hay stock disponible
+    if producto.stock <= 0:
+        # Aquí puedes manejar la situación, como redirigir con un mensaje de error
+        return redirect('ver_carrito')  # o retornar un mensaje de error
+
     item, created = ItemCarrito.objects.get_or_create(carrito=carrito, producto=producto)
 
     if not created:  # Si el producto ya existía, sumamos 1
-        item.cantidad += 1
+        if item.cantidad < producto.stock:  # Verifica si hay suficiente stock
+            item.cantidad += 1
+        else:
+            # Aquí también puedes manejar el caso de falta de stock
+            return redirect('ver_carrito')
 
     item.save()
+
+    # Restar stock del producto
+    producto.stock -= item.cantidad  # Resta la cantidad agregada al carrito
+    producto.save()  # Guarda el producto con el nuevo stock
+
     return redirect('ver_carrito')
 
 

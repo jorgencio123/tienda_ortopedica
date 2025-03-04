@@ -35,12 +35,14 @@
 
             <!-- Buscador y Carrito alineados a la derecha -->
             <div class="d-flex ms-auto align-items-center">
-                <!-- Formulario de búsqueda -->
-                <form class="d-flex me-3" method="get" action="{% url 'productos_lista' %}">
-                    <input class="form-control me-2" type="search" name="q" placeholder="Buscar productos"
-                        aria-label="Buscar">
-                    <button class="btn btn-outline-success" type="submit">Buscar</button>
-                </form>
+<!-- Formulario de búsqueda -->
+<form class="d-flex me-3" method="get" action="{% url 'productos_lista' %}">
+    <!-- Campo de búsqueda -->
+    <input class="form-control me-2" type="search" name="nombre" value="{{ request.GET.nombre }}" placeholder="Buscar productos" aria-label="Buscar">
+
+    <!-- Botón de búsqueda -->
+    <button class="btn btn-outline-success" type="submit">Buscar</button>
+</form>
 
                 <!-- Icono de Carrito -->
                 <a href="{% url 'ver_carrito' %}" class="btn btn-outline-primary position-relative">

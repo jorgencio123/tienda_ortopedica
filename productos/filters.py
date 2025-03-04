@@ -12,6 +12,9 @@ class ProductoFilter(django_filters.FilterSet):
     # Filtro de stock disponible
     stock__gte = django_filters.NumberFilter(field_name='stock', lookup_expr='gte', label='Stock mínimo')
 
+    nombre = django_filters.CharFilter(field_name='nombre', lookup_expr='icontains', label='Buscar por nombre')
+
+
     class Meta:
         model = Producto
-        fields = ['precio__gte', 'precio__lte', 'categoria', 'stock__gte']
+        fields = ['precio__gte', 'precio__lte', 'categoria', 'stock__gte','nombre']

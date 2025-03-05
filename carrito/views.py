@@ -164,8 +164,8 @@ def procesar_compra(request):
     transaccion.save()
 
     # Datos de entrada para la solicitud de pago
-    api_key = "6CF5B5F9-38A4-4A8C-AA2A-354L8197C8E9"  # Reemplaza con tu apiKey
-    secret_key = "fe82ed8001f66e33d9922ce5f46762d6a6ad3493"  # Reemplaza con tu secretKey
+    api_key = "1FA90364-F729-4167-A3D2-50FB1LD779C9"  # Reemplaza con tu apiKey
+    secret_key = "4726f7297cffd829d7d366621e13bc25c5e816c9"  # Reemplaza con tu secretKey
     commerce_order = f"ORDEN{orden_id}"  # Número de orden del comercio
     subject = f"Compra en el carrito de {request.user.username}"
     currency = "CLP"

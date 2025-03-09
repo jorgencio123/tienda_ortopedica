@@ -16,7 +16,7 @@
                 {% load static %}
                 <img src="{% static 'images/logotipo.webp' %}" alt="Logo" class="img-fluid" style="max-width: 150px;">
             </div>
-            <a href="{% url 'productos_lista' %}" class="btn btn-outline-primary">
+            <a href="{% url 'ProductoListViewjefe' %}" class="btn btn-outline-primary">
                 <i class="bi bi-arrow-left"></i> Volver a la lista de productos
             </a>
         </div>
@@ -46,7 +46,7 @@
                                 <button type="submit" class="btn btn-success">
                                     <i class="bi bi-save"></i> Guardar
                                 </button>
-                                <a href="{% url 'productos_lista' %}" class="btn btn-secondary">
+                                <a href="{% url 'ProductoListViewjefe' %}" class="btn btn-secondary">
                                     <i class="bi bi-x-circle"></i> Cancelar
                                 </a>
                             </div>

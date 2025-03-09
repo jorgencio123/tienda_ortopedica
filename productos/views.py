@@ -50,17 +50,17 @@ class ProductoCreateView(CreateView):
     model = Producto
     template_name = 'productos/producto_form.html'
     fields = ['nombre', 'descripcion', 'precio', 'stock', 'categoria', 'imagen']
-    success_url = reverse_lazy('productos_lista')
+    success_url = reverse_lazy('ProductoListViewjefe')
 
 class ProductoUpdateView(UpdateView):
     model = Producto
     template_name = 'productos/producto_form.html'
     fields = ['nombre', 'descripcion', 'precio', 'stock', 'categoria', 'imagen']
-    success_url = reverse_lazy('productos_lista')
+    success_url = reverse_lazy('ProductoListViewjefe')
 
 class ProductoDeleteView(DeleteView):
     model = Producto
     template_name = 'productos/producto_confirmar_eliminar.html'
-    success_url = reverse_lazy('productos_lista')
+    success_url = reverse_lazy('ProductoListViewjefe')
 
 

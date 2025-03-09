@@ -23,8 +23,9 @@ class ItemCarrito(models.Model):
     cantidad = models.PositiveIntegerField(default=1)
     agregado_en = models.DateTimeField(auto_now_add=True)
 
+    def subtotal(self):
+        return self.cantidad * self.producto.precio
+    
     def __str__(self):
         return f"{self.cantidad} x {self.producto.nombre}"
 
-    def subtotal(self):
-        return self.cantidad * self.producto.precio

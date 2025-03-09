@@ -95,44 +95,73 @@ def ver_carrito(request):
     """Muestra el carrito, ya sea de un usuario autenticado o un invitado."""
     carrito = obtener_o_crear_carrito(request)
     total = carrito.total()  # Llamar al método total() del modelo
+    
+    # Debug: Verificar los productos y sus cantidades
+    print(f"Total en carrito: {total}")
+    for item in carrito.items.all():
+        print(f"Producto: {item.producto.nombre}, Cantidad: {item.cantidad}, Subtotal: {item.subtotal()}")
+    
     return render(request, 'carrito/ver_carrito.html', {'carrito': carrito, 'total': total})
 
 
 @csrf_exempt
 def agregar_al_carrito(request, producto_id):
-    """Agrega un producto al carrito, asegurando que no se duplique en la primera adición."""
+    """Agrega un producto al carrito, acumulando la cantidad si ya existe."""
     carrito = obtener_o_crear_carrito(request)
     producto = get_object_or_404(Producto, id=producto_id)
     
-    # Verificar si hay stock disponible
-    if producto.stock <= 0:
-        # Aquí puedes manejar la situación, como redirigir con un mensaje de error
-        return redirect('ver_carrito')  # o retornar un mensaje de error
+    # Obtener la cantidad del formulario
+    cantidad = int(request.POST.get('cantidad', 1))  # Valor por defecto es 1
 
-    item, created = ItemCarrito.objects.get_or_create(carrito=carrito, producto=producto)
-
-    if not created:  # Si el producto ya existía, sumamos 1
-        if item.cantidad < producto.stock:  # Verifica si hay suficiente stock
-            item.cantidad += 1
+    # Debug: Imprimir información
+    print(f"Intentando agregar {cantidad} unidades del producto {producto.nombre} (ID: {producto.id})")
+    
+    if cantidad <= 0 or cantidad > producto.stock:
+        print("Error: La cantidad solicitada excede el stock disponible o es negativa.")
+        return redirect('ver_carrito')
+    
+    # Usar defaults para que, si no existe, se cree con la cantidad enviada
+    item, created = ItemCarrito.objects.get_or_create(
+        carrito=carrito, 
+        producto=producto,
+        defaults={'cantidad': cantidad}
+    )
+    
+    if not created:
+        # Si el producto ya existe, se suma la cantidad solo si hay stock suficiente
+        if item.cantidad + cantidad <= producto.stock:
+            item.cantidad += cantidad
         else:
-            # Aquí también puedes manejar el caso de falta de stock
+            print("Error: No hay suficiente stock para agregar la cantidad solicitada.")
             return redirect('ver_carrito')
+        item.save()
+    
+    # Actualizar el stock del producto
+    producto.stock -= cantidad
+    producto.save()
 
-    item.save()
-
-    # Restar stock del producto
-    producto.stock -= item.cantidad  # Resta la cantidad agregada al carrito
-    producto.save()  # Guarda el producto con el nuevo stock
-
+    print(f"Se han agregado {cantidad} unidades del producto {producto.nombre} (ID: {producto.id}) al carrito.")
+    
     return redirect('ver_carrito')
 
 
 @csrf_exempt
 def eliminar_del_carrito(request, item_id):
-    """Elimina un item del carrito."""
+    """Elimina un item del carrito y actualiza el stock del producto."""
     carrito = obtener_o_crear_carrito(request)
     item = get_object_or_404(ItemCarrito, id=item_id, carrito=carrito)
+    
+    # Recuperar el producto y la cantidad eliminada
+    producto = item.producto
+    cantidad_eliminada = item.cantidad
+    
+    # Eliminar el item del carrito
     item.delete()
+    
+    # Recuperar el stock del producto
+    producto.stock += cantidad_eliminada
+    producto.save()
+
     return redirect('ver_carrito')
 
 

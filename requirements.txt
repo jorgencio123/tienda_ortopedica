@@ -6,3 +6,5 @@ whitenoise[brotli]
 requests
 reportlab
 django-cors-headers
+dj-database-url
+psycopg2-binary

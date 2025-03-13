@@ -11,7 +11,9 @@
         <div class="container d-flex justify-content-between align-items-center">
             <div>
                 {% load static %}
-                <img src="{% static 'images/logotipo.webp' %}" alt="Logo" class="img-fluid" style="max-width: 150px;">
+                <a href="{% url 'ProductoListViewjefe' %}">
+                    <img src="{% static 'images/logotipo.webp' %}" alt="Logo" class="img-fluid" style="max-width: 150px;">
+                </a>
             </div>
             <form class="d-flex" method="get" action="{% url 'productos_lista' %}">
                 <input class="form-control me-2" type="search" name="q" placeholder="Buscar productos" aria-label="Buscar">

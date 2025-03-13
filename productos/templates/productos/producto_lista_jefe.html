@@ -14,8 +14,11 @@
             <!-- Logo -->
             <div>
                 {% load static %}
-                <img src="{% static 'images/logotipo.webp' %}" alt="Logo" class="img-fluid" style="max-width: 150px;">
+                <a href="{% url 'ProductoListViewjefe' %}">
+                    <img src="{% static 'images/logotipo.webp' %}" alt="Logo" class="img-fluid" style="max-width: 150px;">
+                </a>
             </div>
+            
             <!-- Buscador -->
             <form class="d-flex" method="get" action="{% url 'productos_lista' %}">
                 <input class="form-control me-2" type="search" name="q" placeholder="Buscar productos" aria-label="Buscar">
@@ -79,6 +82,49 @@
             {% endfor %}
         </div>
     </div>
+    {% if is_paginated %}
+    <nav aria-label="Page navigation">
+        <ul class="pagination justify-content-center">
+            <!-- Botón a la primera página -->
+            {% if page_obj.has_previous %}
+            <li class="page-item">
+                <a class="page-link" href="?page=1" aria-label="Primera">
+                    <span aria-hidden="true">&laquo; Primera</span>
+                </a>
+            </li>
+            <!-- Botón a la página anterior -->
+            <li class="page-item">
+                <a class="page-link" href="?page={{ page_obj.previous_page_number }}" aria-label="Anterior">
+                    <span aria-hidden="true">Anterior</span>
+                </a>
+            </li>
+            {% endif %}
+
+            <!-- Indicador de página actual -->
+            <li class="page-item disabled">
+                <span class="page-link">
+                    Página {{ page_obj.number }} de {{ paginator.num_pages }}
+                </span>
+            </li>
+
+            <!-- Botón a la página siguiente -->
+            {% if page_obj.has_next %}
+            <li class="page-item">
+                <a class="page-link" href="?page={{ page_obj.next_page_number }}" aria-label="Siguiente">
+                    <span aria-hidden="true">Siguiente</span>
+                </a>
+            </li>
+            <!-- Botón a la última página -->
+            <li class="page-item">
+                <a class="page-link" href="?page={{ paginator.num_pages }}" aria-label="Última">
+                    <span aria-hidden="true">Última &raquo;</span>
+                </a>
+            </li>
+            {% endif %}
+        </ul>
+    </nav>
+    {% endif %}
+
 
     <!-- Footer -->
     <footer class="bg-dark text-white py-4 mt-5">
